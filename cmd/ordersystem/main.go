@@ -24,11 +24,10 @@ import (
 )
 
 func main() {
-	configs, err := configs.LoadConfig("./cmd/ordersystem")
+	configs, err := configs.LoadConfig("./")
 	if err != nil {
 		panic(err)
 	}
-
 	db, err := sql.Open(configs.DBDriver, fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", configs.DBUser, configs.DBPassword, configs.DBHost, configs.DBPort, configs.DBName))
 	if err != nil {
 		panic(err)
@@ -38,7 +37,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	rabbitMQChannel := getRabbitMQChannel()
+	rabbitMQChannel := getRabbitMQChannel(configs.GRPCServerHost)
 
 	eventDispatcher := events.NewEventDispatcher()
 	eventDispatcher.Register("OrderCreated", &handler.OrderCreatedHandler{
@@ -79,8 +78,8 @@ func main() {
 	http.ListenAndServe(":"+configs.GraphQLServerPort, nil)
 }
 
-func getRabbitMQChannel() *amqp.Channel {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+func getRabbitMQChannel(host string) *amqp.Channel {
+	conn, err := amqp.Dial("amqp://guest:guest@" + host + ":5672/")
 	if err != nil {
 		panic(err)
 	}

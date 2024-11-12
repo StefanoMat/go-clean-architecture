@@ -11,6 +11,7 @@ type conf struct {
 	DBName            string `mapstructure:"DB_NAME"`
 	WebServerPort     string `mapstructure:"WEB_SERVER_PORT"`
 	GRPCServerPort    string `mapstructure:"GRPC_SERVER_PORT"`
+	GRPCServerHost    string `mapstructure:"GRPC_SERVER_HOST"`
 	GraphQLServerPort string `mapstructure:"GRAPHQL_SERVER_PORT"`
 }
 
