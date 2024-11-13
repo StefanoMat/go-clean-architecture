@@ -9,10 +9,10 @@ services:
     restart: always
     ports:
       - "8000:8000"
+      - "8080:8080"
+      - "50051:50051"
     volumes:
       - .:/app
-    environment:
-      - PORT=8000
     depends_on:
       - mysql
       - rabbitmq
